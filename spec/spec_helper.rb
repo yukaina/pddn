@@ -5,4 +5,4 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
     SimpleCov::Formatter::HTMLFormatter,
     CodeClimate::TestReporter::Formatter
 ]
-SimpleCov.start "rails"
+SimpleCov.start 'rails'
