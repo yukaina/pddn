@@ -1,0 +1,19 @@
+# This is the configuration used to check the rubocop source code.
+
+#inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+    - 'spec/fixtures/**/*'
+
+# Avoid the use of double negation (!!)
+Style/DoubleNegation:
+  Enabled: false
+
+# Use only ascii symbols in comments.
+AsciiComments:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
