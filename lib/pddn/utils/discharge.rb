@@ -3,7 +3,8 @@ module Pddn
     # for discharge_documents strip.
     module Discharge
       def self.text_strip(td)
-        td.text.encode('utf-8', invalid: :replace, undef: :replace, replace: '').gsub(160.chr('UTF-8'), '').strip
+        td.text.encode('UTF-16be', invalid: :replace, undef: :replace, replace: '') \
+          .encode('UTF-8').gsub(160.chr('UTF-8'), '').strip
       end
     end
   end
