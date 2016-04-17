@@ -1,0 +1,114 @@
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="-1">
+		<meta http-equiv="Content-Script-Type" content="text/javascript">
+		<title>予警報発表地方</title>
+		<script language="JavaScript">
+		<!--
+			var formIdHeader = "ipTopGaikyo_commonForm_";
+			var paramStr = "?gamenId=&fldCtlParty=&fvrt=yes";
+			
+			/**
+			 * 簡易地図クリック
+			 * @param warningType 予警報種別
+			 * @param areaCd 地方コード
+			 */
+			function onclickYokeihoArea(warningType, areaCd) {
+				var url = '';
+				if(warningType==1){
+					url = url + 'ipKozuiMap.do';
+				}else if(warningType==2){
+					url = url + 'ipSuiboMap.do';
+				}else if(warningType==3){
+					url = url + 'ipDamhoMap.do';
+				}
+				url = url + '?areaCd=' + areaCd;
+				if(warningType==1){
+					url = url + '&gamenId=01-0401';
+				}else if(warningType==2){
+					url = url + '&gamenId=01-0501';
+				}else if(warningType==3){
+					url = url + '&gamenId=01-0601';
+				}
+				url = url + '&fldCtlParty=no';
+				window.top.location.href = url;
+			}
+			
+		    /**
+			*　サブメニューマウスオーバー時の処理
+			*/
+		    function msOverSubmenu(areaCd){
+		    	var msoLayerObj = document.getElementById("msoLayer");
+		    	msoLayerObj.src="imageMap/smpl_map_mso_" + areaCd + ".gif";
+		    }
+
+		    /**
+			*　サブメニューマウスアウト時の処理
+			*/
+		    function msOutSubmenu(){
+		    	var msoLayerObj = document.getElementById("msoLayer");
+		    	msoLayerObj.src="imageMap/smpl_map_mso_dmy.gif";
+		    }
+		//-->
+		</script>
+	</head>
+	<body>
+
+		
+		
+		
+			
+			
+		
+
+		<!-- MouseOver時表示Layer -->
+		<div style="position:absolute; z-index:11000;">
+			<img id="msoLayer" width="403" src="imageMap/smpl_map_mso_dmy.gif" height="272" border="0" alt="" usemap="#smplMap">
+		</div>	
+		
+		<!-- 地方名Layer -->
+		<img src="imageMap/smpl_map_top.gif" width="403" height="272" border="0" alt="" style="position:absolute; z-index:10000;" usemap="#smplMap">
+		
+		<!-- 地方別超過彩色Layer -->
+		
+		
+			<img src="imageMap/smpl_map_dam_82_1.gif" width="403" height="272" border="0" alt="" style="position:absolute; z-index:5082;">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- 全国背景地図Layer -->
+		<img src="imageMap/smpl_map_base.gif" width="403" height="272" border="0" alt="" style="position:absolute; z-index:0; background-color: #eaeaf2;">
+		
+		<!-- 凡例Layer -->		
+		<img src="image/hanrei_map_com_damho.png" border="0" alt="" style="left:5px; top:5px; position:absolute; z-index:9000;">
+	</body>
+		
+	<map name="smplMap">
+		<area shape="poly" alt="北海道" coords="297,4, 386,4, 386,58, 321,58, 321,68, 297,68" href="#" onclick="onclickYokeihoArea(3, '81');" onmouseover="msOverSubmenu('81')" onmouseout="msOutSubmenu()">
+		<area shape="poly" alt="東北" coords="296,75, 348,75, 348,65, 365,65, 365,155, 312,155, 312,126, 296,126" href="#" onclick="onclickYokeihoArea(3, '82');" onmouseover="msOverSubmenu('82')" onmouseout="msOutSubmenu()">
+		<area shape="poly" alt="関東" coords="298,159, 365,159, 365,241, 343,241, 343,216, 332,216, 332,239, 309,239, 309,221, 291,221, 291,200, 298,200" href="#" onclick="onclickYokeihoArea(3, '83');" onmouseover="msOverSubmenu('83')" onmouseout="msOutSubmenu()">
+		<area shape="poly" alt="北陸" coords="238,128, 257,128, 257,143, 296,143, 296,130, 308,130, 309,155, 295,155, 294,197, 288,197, 287,221, 275,221, 275,181, 238,181" href="#" onclick="onclickYokeihoArea(3, '84');" onmouseover="msOverSubmenu('84')" onmouseout="msOutSubmenu()">
+		<area shape="poly" alt="中部" coords="254,185, 271,185, 271,225, 305,225, 306,248, 266,248, 266,236, 257,236, 257,253, 241,253, 240,209, 254,209" href="#" onclick="onclickYokeihoArea(3, '85');" onmouseover="msOverSubmenu('85')" onmouseout="msOutSubmenu()">
+		<area shape="poly" alt="近畿" coords="188,167, 233,167, 233,185, 250,185, 250,205, 236,205, 236,253, 206,253, 206,217, 188,217" href="#" onclick="onclickYokeihoArea(3, '86');" onmouseover="msOverSubmenu('86')" onmouseout="msOutSubmenu()">
+		<area shape="poly" alt="中国" coords="129,167, 184,167, 184,217, 129,217" href="#" onclick="onclickYokeihoArea(3, '87');" onmouseover="msOverSubmenu('87')" onmouseout="msOutSubmenu()">
+		<area shape="poly" alt="四国" coords="136,224, 195,224, 195,259, 136,259" href="#" onclick="onclickYokeihoArea(3, '88');" onmouseover="msOverSubmenu('88')" onmouseout="msOutSubmenu()">
+		<area shape="poly" alt="九州" coords="49,167, 120,167, 120,250, 75,250, 75,195, 63,195, 63,205, 49,205" href="#" onclick="onclickYokeihoArea(3, '89');" onmouseover="msOverSubmenu('89')" onmouseout="msOutSubmenu()">
+		<area shape="poly" alt="沖縄" coords="24,242, 40,242, 40,268, 24,268" href="#" onclick="onclickYokeihoArea(3, '90');" onmouseover="msOverSubmenu('90')" onmouseout="msOutSubmenu()">
+	</map>
+</html>
