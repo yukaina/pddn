@@ -16,7 +16,6 @@ module Pddn
 
     def init_discharge_uri(doc)
       doc.xpath('/html/map[@name="smplMap"]/area').each do |area|
-        puts area.inspect
         discharge_uris << discharge_link_from_area(area)
       end
     end
