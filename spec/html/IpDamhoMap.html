@@ -1,0 +1,930 @@
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>ダム放流通知発表地域図</title>
+<link rel="stylesheet" type="text/css" href="cssIp.css">
+<link rel="stylesheet" type="text/css" href="map_ip.css">
+<script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="commonheader.js"></script>
+<script type="text/javascript" src="map_ip.js"></script>
+<script language="JavaScript">
+<!--
+var formIdHeader = "ipDamhoMap_commonForm_";
+var paramStr = "?areaCd=81&gamenId=01-0601&fldCtlParty=no&fvrt=yes";
+
+function onclickIconPopup(actionUrl, gamenId, obsrvId) {
+	goIpObsrvKobetuNoTime(actionUrl, obsrvId, gamenId, 'no', 'true');
+}
+//-->
+</script>
+</head>
+<body>
+	<form id="ipDamhoMap" name="commonHeaderForm" action="ipDamhoMap.do" method="post">
+		<input type="hidden" name="commonForm.gamenId" value="01-0601" id="ipDamhoMap_commonForm_gamenId"/>
+		<input type="hidden" name="commonForm.area" value="81" id="ipDamhoMap_commonForm_area"/>
+		<input type="hidden" name="commonForm.pageInit" value="0" id="ipDamhoMap_commonForm_pageInit"/>
+		<input type="hidden" name="commonForm.fldCtlParty" value="no" id="ipDamhoMap_commonForm_fldCtlParty"/>
+	</form>
+
+
+
+
+	<div id="wrapper">
+		<div id="header">
+			
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+	<script language="JavaScript" type="text/javascript">
+	<!--
+		top.document.title = '川の防災情報 ：ダム放流通知発表地域図';
+
+	    /**
+		*　選択メニューに対応して画面を更新します。
+		*　@param urlHeader : 遷移先UTLヘッダ　/kawabou/XXXXXXX.do
+		*　@param prefCd : 都道府県コード
+		*　@param townCd : 市町村コード
+		*　@param areaCd : 地方コード
+		*　@param rvrsysCd : 水系コード
+		*/
+		function menuSubmit(urlHeader, prefCd, townCd, areaCd, rvrsysCd, gamenId){
+			url = urlHeader + "?init=init" +
+					"&prefCd=" + prefCd +
+					"&townCd=" + townCd +
+					"&areaCd=" + areaCd +
+					"&rvrsysCd=" + rvrsysCd +
+					"&gamenId=" + gamenId +
+					"&fldCtlParty=no";
+
+			document.location.href = url;
+		}
+
+		/**
+		 * 選択メニューに対応して画面を更新します。（引数なし）
+		 * @param urlHeader : 遷移先UTLヘッダ　/kawabou/XXXXXXX.do
+		 * @param gamenId : 遷移先画面ID
+		 */
+		function menuSubmitNoParam(urlHeader, gamenId){
+			url = urlHeader;
+			if(gamenId != ''){
+				url = url + "?init=init&gamenId=" + gamenId + "&fldCtlParty=no";
+			}
+
+			document.location.href = url;
+		}
+
+		/**
+		 * トップ画面へ遷移する。（引数なし）
+		 * @param urlHeader : 遷移先UTLヘッダ　/kawabou/XXXXXXX.do
+		 * @param gamenId : 遷移先画面ID
+		 * @param fldCtlPartyVal : yes(水防関係者) or no(非水防関係者)
+		 */
+		function menuSubmitGoTop(urlHeader, gamenId, fldCtlPartyVal){
+			url = urlHeader;
+			if(gamenId != ''){
+				if (fldCtlPartyVal == null){
+					fldCtlPartyVal = "no"; //トップ画面は非水防関係者固定
+				}
+				url = url + "?init=init&gamenId=" + gamenId + "&fldCtlParty=" + fldCtlPartyVal + "";
+			}
+
+			document.location.href = url;
+		}
+
+		function goPast(urlHeader,gamenId){
+			url = urlHeader + "?init=init" +
+				"&obsrvId=" + document.getElementById(formIdHeader + "obsrvId").value +
+				"&gamenId=" + gamenId +
+				"&fldCtlParty=no";
+
+			//window.open(url, "_blank");
+			document.location.href = url;
+		}
+
+		/**
+         *　操作マニュアルのPDFをポップアップ表示する
+         */
+   		function popupPdf(strURL){
+			window.open(strURL, "", "toolbar=0, location=0, directories=0, status=0, menubar=0");
+    	}
+
+	    /**
+		*　データ出力画面をポップアップ表示します。
+		*/
+		function goDataOut(formIdHeader){
+
+			//メインフレームの値取得
+			var formObj;
+			var maxIdx;
+
+			//管理区分
+			maxIdx = 4;
+			var kanriKubuns = "";
+			for(var i = 1 ; i <= maxIdx ; i++){
+				formObj = document.getElementById("commonForm.kanriKubuns-" + i);
+				if(formObj != null && formObj.checked == true){
+					kanriKubuns += formObj.value + "-";
+				}
+			}
+			kanriKubuns = kanriKubuns.substring(0, kanriKubuns.length - 1);
+
+			//予警報観測所
+			maxIdx = 3;
+			var yokeiObsrvs = "";
+			for(var i = 1 ; i <= maxIdx ; i++){
+				formObj = document.getElementById("commonForm.yokeiObsrvs-" + i);
+				if(formObj != null && formObj.checked == true){
+					yokeiObsrvs += formObj.value + "-";
+				}
+			}
+			yokeiObsrvs = yokeiObsrvs.substring(0, yokeiObsrvs.length - 1);
+
+			//テレ種別
+			maxIdx = 3;
+			var dispTeles = "";
+			for(var i = 1 ; i <= maxIdx ; i++){
+				formObj = document.getElementById("commonForm.dispTeles-" + i);
+				if(formObj != null && formObj.checked == true){
+					dispTeles += formObj.value + "-";
+				}
+			}
+			dispTeles = dispTeles.substring(0, dispTeles.length - 1);
+
+			//表示データタイプ
+			maxIdx = 2;
+			var dispDataTypes = "";
+			for(var i = 1 ; i <= maxIdx ; i++){
+				formObj = document.getElementById("commonForm.dispDataTypes-" + i);
+				if(formObj != null && formObj.checked == true){
+					dispDataTypes += formObj.value + "-";
+				}
+			}
+			dispDataTypes = dispDataTypes.substring(0, dispDataTypes.length - 1);
+
+			//表示諸元
+			maxIdx = 2;
+			var dispShogens = "";
+			for(var i = 1 ; i <= maxIdx ; i++){
+				formObj = document.getElementById("commonForm.dispShogens-" + i);
+				if(formObj != null && formObj.checked == true){
+					dispShogens += formObj.value + "-";
+				}
+			}
+			dispShogens = dispShogens.substring(0, dispShogens.length - 1);
+
+	    	//時刻タイプ
+			var formTimeTypeObj60 = document.getElementById(formIdHeader + "timeType60");
+			var timeType;
+			if(formTimeTypeObj60 != null){
+				if(formTimeTypeObj60.checked == true){
+					timeType = 60;
+				}else{
+					timeType = 10;
+				}
+
+			}else{
+				timeType = 60;
+			}
+
+			//流域雨量Radio
+			var formBasinData = document.getElementById(formIdHeader + "dispBasinDataType1");
+			var basinDataType = "";
+			if(formBasinData != null){
+				if(formBasinData.checked == true){
+					basinDataType = 1;
+				}else{
+					basinDataType = 2;
+				}
+			}
+
+			url = "/kawabou/dataOutPre.do?" +
+					"gamenId=" + document.getElementById(formIdHeader + "gamenId").value +
+					"&prefCd=" + document.getElementById(formIdHeader + "pref").value +
+					"&townCd=" + document.getElementById(formIdHeader + "town").value +
+					"&areaCd=" + document.getElementById(formIdHeader + "area").value +
+					"&rvrsysCd=" + document.getElementById(formIdHeader + "rvrsys").value +
+					"&obsrvId=" + document.getElementById(formIdHeader + "obsrvId").value +
+					"&timeType=" + timeType +
+					"&yokeiObsrvs=" + yokeiObsrvs +
+					"&kanriKubuns=" + kanriKubuns +
+					"&dispDataTypes=" + dispDataTypes +
+					"&dispTeles=" + dispTeles +
+					"&basinDataType=" + basinDataType +
+					"&dispShogens=" + dispShogens;
+
+			window.open(url, "", "height=300, width=500, toolbar=no, location=no, top=" + (screen.availHeight / 2 - 150) + ", left=" + (screen.availWidth / 2 - 250));
+		}
+
+		/**
+		 *　サブメニューの選択を表示する
+		 */
+		function onoffSelectBox(mainID, subID, isDisplayFlag) {
+
+			// サブメニューの位置調整
+			var elemBtn = document.getElementById(mainID);
+			var rect = elemBtn.getBoundingClientRect();
+			var posX = rect.left;
+			var posY = rect.bottom;
+			var dElem = document.documentElement;
+			var dBody = document.body;
+			var scrollX = dElem.scrollLeft || dBody.scrollLeft;
+			var scrollY = dElem.scrollTop || dBody.scrollTop;
+			var x = posX + scrollX - 15;
+			var y = posY + scrollY - 45;
+			var elem = document.getElementById(subID);
+			elem.style.left = x + 'px';
+			elem.style.top = y + 'px';
+			if (isDisplayFlag != null){
+
+				if (isDisplayFlag){
+					elem.style.display = "block";
+				} else{
+					elem.style.display = "none";
+				}
+			} else{
+				if(elem.style.display == "block"){
+					elem.style.display = "none";
+				}else{
+					elem.style.display = "block";
+				}
+			}
+		}
+
+		/**
+		 *　CバンドレーダとXバンドレーダとの選択用サブメニューを表示する
+		 */
+		function onoffRadarSelectBox(isDisplayFlag){
+
+			// サブメニューの位置調整
+			var elemBtn = document.getElementById('id_rainRdr');
+			var rect = elemBtn.getBoundingClientRect();
+			var posX = rect.left;
+			var posY = rect.bottom;
+			var dElem = document.documentElement;
+			var dBody = document.body;
+			var scrollX = dElem.scrollLeft || dBody.scrollLeft;
+			var scrollY = dElem.scrollTop || dBody.scrollTop;
+			var x = posX + scrollX - 15;
+			var y = posY + scrollY - 45;
+			var elem = document.getElementById("radarSelect");
+			elem.style.left = x + 'px';
+			elem.style.top = y + 'px';
+			if (isDisplayFlag != null){
+
+				if (isDisplayFlag){
+					elem.style.display = "block";
+				} else{
+					elem.style.display = "none";
+				}
+			} else{
+				if(elem.style.display == "block"){
+					elem.style.display = "none";
+				}else{
+					elem.style.display = "block";
+				}
+			}
+		}
+
+	    /**
+		*　サブメニューマウスオーバー時の処理
+		*/
+	    function msOverSubmenu(elem){
+	    	var appVersion = window.navigator.appVersion.toLowerCase();
+
+	    	var subLabel = elem.firstChild.nextSibling.nextSibling.nextSibling.nextSibling;
+	    	if (appVersion.indexOf("msie 8.") != -1 || appVersion.indexOf("msie 7.") != -1 || appVersion.indexOf("msie 6.") != -1){
+	    		subLabel = elem.firstChild.nextSibling.nextSibling;
+	    	}
+
+	    	subLabel.style.textDecoration = "underline";
+
+	    	imgChange(elem, true);
+	   }
+
+	    /**
+		*　サブメニューマウスアウト時の処理
+		*/
+	    function msOutSubmenu(elem){
+	    	var appVersion = window.navigator.appVersion.toLowerCase();
+
+	    	var subLabel = elem.firstChild.nextSibling.nextSibling.nextSibling.nextSibling;
+	    	if (appVersion.indexOf("msie 8.") != -1 || appVersion.indexOf("msie 7.") != -1 || appVersion.indexOf("msie 6.") != -1){
+	    		subLabel = elem.firstChild.nextSibling.nextSibling;
+	    	}
+
+	    	subLabel.style.textDecoration = "none";
+
+	    	imgChange(elem, false);
+	   }
+	    
+		/**
+	     * マウスイベントのイメージ変更
+	     * @param elem 
+	     * @param flag true:マウスオーバー、false:マウスアウト
+	     */
+		function imgChange(elem, flag){	    	
+	    	if (elem == null || elem.id == null){
+	    		return;
+	    	}
+	    	
+	    	switch (elem.id){
+				case 'id_siteExpl' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_introduce_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_introduce.png");
+		    		}
+		    		break;
+		    	
+				case 'id_regSel' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_region_select_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_region_select.png");
+		    		}
+		    		break;
+		    	case 'id_stgRain' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_stg_rain_mso.png");
+		    		} else{
+	    				modifyChange(elem, "image/sub_menu_stg_rain.png");
+		    		}
+		    		break;
+		    	
+		    	case 'id_camera' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_camera_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_camera.png");
+		    		}
+		    		break;
+		    	
+		    	case 'id_rainRdr' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_rain_radar_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_rain_radar.png");
+		    		}
+		    		break;
+		    	
+		    	case 'id_dam' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_dam_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_dam.png");
+		    		}
+		    		break;
+		    	
+		    	case 'id_wtrCstSnow' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_wtr_cst_snow_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_wtr_cst_snow.png");
+		    		}
+		    		break;
+		    	
+		    	case 'id_flood' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_flood_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_flood.png");
+		    		}
+		    		break;
+				
+		    	case 'id_searchObs' :
+					if (flag){
+						modifyChange(elem, "image/sub_menu_search_obsrv_mso.png");
+					} else{
+						modifyChange(elem, "image/sub_menu_search_obsrv.png");
+					}
+					break;
+		    	
+		    	case 'id_qna' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_qna_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_qna.png");
+		    		}
+		    		break;
+		    	
+		    	case 'id_manual' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_manual_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_manual.png");
+		    		}
+		    		break;
+		    	
+		    	case 'id_notice' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_notice_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_notice.png");
+		    		}
+		    		break;
+		    	
+		    	case 'id_linkList' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_link_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_link.png");
+		    		}
+		    		break;
+		    	
+		    	case 'id_fldCtlParty' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_fldctl_party_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_fldctl_party.png");
+		    		}
+		    		break;
+		    	
+		    	case 'id_sitemap' :
+		    		if (flag){
+		    			modifyChange(elem, "image/sub_menu_sitemap_mso.png");
+		    		} else{
+		    			modifyChange(elem, "image/sub_menu_sitemap.png");
+		    		}
+		    		break;
+		    	
+		    	default:
+		    		break;
+	    	}
+	    }
+	    
+	    /**
+	     *画像を切り替え表示する
+	     */
+	    function modifyChange(elem, imgSrc){	    	
+	    	if (elem != null){
+	    		if (elem.childNodes != null){
+	    			
+	    			//オブジェクトの子要素の中で<imgの場合制御
+	    			for (var cnt = 0 ; cnt < elem.childNodes.length ; cnt++){
+	    				if(elem.childNodes[cnt].nodeName.toLowerCase() == "img"){
+	    					var imgObj = elem.childNodes[cnt];
+	    					imgObj.src = imgSrc;
+	    					
+	    					break;
+	    				}
+	    			}
+	    		}
+	    	}
+	    	
+	    	return;
+	   	}	    
+	//-->
+	</script>
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	<a href="#top" title="" class="toTop" style="display: none">本文へ移動</a>
+	<div style="width:100%; height:75px; background-color:#005197;">
+		<div style="position:absolute; top:0px; left:0px; width:987px; height:96px; color:#ffffff; background-color:#005197;">
+			<table class="tableDummy" border="0" cellspacing="0" cellpadding="0" width="100%">
+				<tr valign="top">
+					<td width="350">
+						<table border="0" cellspacing="0" cellpadding="0" border="0" width="100%" height="75">
+							<tr>
+								<td id="headGamenTitle" class="gamenTitle" height="25">
+									<div style="height:45px;">
+										
+											<a href="javascript:menuSubmitGoTop('/kawabou/ipTopGaikyo.do', '01-0101', 'no');" 
+													title="トップへ">
+												<img src="image/system_logo_clear.png" border="0" alt="サイトロゴ"/>
+											</a>
+										
+										
+									</div>
+								</td>
+								<td id="headKousinTime" class="headerLbl" align="left"  valign="top" style="font-size:100%; padding:3pt 0pt 0pt 0pt;">
+									<!-- 更新時刻　2016年04月17日 15時59分 -->
+									
+								</td>
+							</tr>
+							<tr>
+								<td id="headGamenTitle" class="gamenTitle" colspan="2">
+									<h1 style="display: none">画面タイトル</h1>
+									ダム放流通知発表地域図
+									
+									
+									
+									
+									
+								</td>
+							</tr>
+						</table>
+					</td>
+					<!-- サブメニュ部 -->
+					<td width="650" valign="top">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0" class="subMenu" align="right">
+							<tr>
+								<td width="*">&nbsp;</td>								
+								
+									<td class="subMenuCell" width="63">
+										<a id="id_siteExpl"
+												href="hpguide/pc/index.html"
+												target="_blank"
+												onmouseout="msOutSubmenu(this)"
+												onmouseover="msOverSubmenu(this)"
+												title="このホームページでわかること">
+											<img src="image/sub_menu_introduce.png" border="0" alt="ホームページ概要"/><br>
+											<span class="subLabel"><span class="subLabelHgtSpace"><br></span>情報の<BR>見方</span>
+										</a>
+									</td>
+									<TD width="15px;"></TD>
+								
+								
+								
+									<td class="subMenuCell">
+										
+										
+											<a id="id_stgRain" 
+													href="ipAreaJump.do?gamenId=01-0201&refineType=1&fldCtlParty=no"
+													onmouseout="msOutSubmenu(this)"
+													onmouseover="msOverSubmenu(this)"
+													title="河川の水位雨量の状況">
+													<img src="image/sub_menu_stg_rain.png" border="0" alt="河川の水位雨量の状況"/><br>
+													<span class="subLabel"><span class="subLabelHgtSpace"><br></span>水位<br>雨量</span>
+											</a>
+										
+									</td>
+								
+								
+									<td class="subMenuCell">
+										
+										
+											<a id="id_camera" 
+													href="ipAreaJump.do?gamenId=01-0201&refineType=2&fldCtlParty=no"
+													onmouseout="msOutSubmenu(this)"
+													onmouseover="msOverSubmenu(this)"
+													title="カメラ画像">
+												<img src="image/sub_menu_camera.png" border="0" alt="カメラ画像"/><br>
+												<span class="subLabel"><span class="subLabelHgtSpace"><br></span>カメラ</span>
+											</a>
+										
+									</td>
+								
+								
+									<td class="subMenuCell">
+										
+										
+											<a id="id_rainRdr" 
+													href="javascript:void(0)"
+													onmouseout="msOutSubmenu(this); onoffSelectBox('id_rainRdr', 'radarSelect', false);"
+													onmouseover="msOverSubmenu(this); onoffSelectBox('id_rainRdr', 'radarSelect', true);"
+													title="">
+												<img src="image/sub_menu_rain_radar.png" border="0" alt="雨量分布(レーダ)の推移"/><br>
+												<span class="subLabel"><span class="subLabelHgtSpace"><br></span>レーダ<br>雨量</span>
+											</a>
+										
+										
+										<!-- レーダ雨量種別の子Window表示制御 -->
+										<div id="radarSelect"
+												onmouseover="onoffSelectBox('id_rainRdr', 'radarSelect', true);"
+												onmouseout="onoffSelectBox('id_rainRdr', 'radarSelect', false);" >
+											<table border="0" cellspacing="0" cellpadding="0" align="right" >
+												<tr>
+													<td>
+														<a href="ipAreaJump.do?gamenId=01-0201&refineType=3&fldCtlParty=no" 
+															target="_top">Cバンドレーダ</a>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<a href="ipXAreaMap.do?gamenId=01-0204&fldCtlParty=no" 
+															target="_top">XRAIN</a>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</td>
+								
+								
+									<td class="subMenuCell">
+										
+										
+											<a id="id_dam"
+													href="ipAreaJump.do?gamenId=01-0201&refineType=4&fldCtlParty=no"
+													onmouseout="msOutSubmenu(this)"
+													onmouseover="msOverSubmenu(this)"
+													title="ダムの情報">
+												<img src="image/sub_menu_dam.png" border="0" alt="ダムの情報"/><br>
+												<span class="subLabel"><span class="subLabelHgtSpace"><br></span>ダム</span>
+											</a>
+										
+									</td>
+								
+								
+									<td class="subMenuCell">
+										
+										
+											<a id="id_wtrCstSnow"
+													href="ipAreaJump.do?gamenId=01-0201&refineType=5&fldCtlParty=no"
+													onmouseout="msOutSubmenu(this)"
+													onmouseover="msOverSubmenu(this)"
+													title="水質・海岸・積雪深">
+												<img src="image/sub_menu_wtr_cst_snow.png" border="0" alt="水質・海岸・積雪深"/><br>
+												<span class="subLabel"><span class="subLabelHgtSpace"><br></span>水質<br>海岸・雪</span>
+											</a>
+										
+									</td>
+								
+								
+									<td class="subMenuCell">
+										
+										
+											<a id="id_flood"
+													href="ipYokeihoJyokyo.do?gamenId=01-0301&fldCtlParty=no"
+													onmouseout="msOutSubmenu(this)"
+													onmouseover="msOverSubmenu(this)"
+													title="河川の予警報">
+												<img src="image/sub_menu_flood.png" border="0" alt="河川の予警報"/><br>
+												<span class="subLabel"><span class="subLabelHgtSpace"><br></span>河川の<br>予警報</span>
+											</a>
+										
+									</td>
+								
+								
+									<td class="subMenuCell">
+										<a id="id_searchObs"
+												href="javascript:menuSubmitNoParam('/kawabou/schObsrv.do', '01-1201');"
+												onmouseout="msOutSubmenu(this)"
+												onmouseover="msOverSubmenu(this)"
+												title="河川・観測所検索">
+											<img src="image/sub_menu_search_obsrv.png" border="0" alt="河川・観測所検索"/><br>
+											<span class="subLabel"><span class="subLabelHgtSpace"><br></span>観測所<br>検索</span>
+										</a>
+									</td>
+								
+								
+									<td class="subMenuCell">
+										<a id="id_notice" 
+												href="javascript:goInfoList('/kawabou/ipInfoList.do','01-1301', '81', '', 'no');" 
+												onmouseout="msOutSubmenu(this)" 
+												onmouseover="msOverSubmenu(this)"
+												title="観測所のお知らせ&#x0A;システムのお知らせ&#x0A;各種イベントのお知らせ">
+											<img src="image/sub_menu_notice.png" border="0" alt="お知らせ"/><br>
+											<span class="subLabel"><span class="subLabelHgtSpace"><br></span>お知<br>らせ</span>
+										</a>
+									</td>
+								
+								
+									<td class="subMenuCell">
+										<a id="id_qna" 
+												href="/kawabou/qa/QA/QA3.html?gamenId=01-9001" 
+												target="_blank" 
+												onmouseout="msOutSubmenu(this)" 
+												onmouseover="msOverSubmenu(this)" 
+												title="Ｑ＆Ａ・用語集・解説&#x0A;取り扱い上の注意&#x0A;お問い合わせ">
+											<img src="image/sub_menu_qna.png" border="0" alt="お問い合わせ"/><br>
+											<span class="subLabel"><span class="subLabelHgtSpace"><br></span>Q&amp;A</span>
+										</a>
+									</td>
+								
+								
+									<td class="subMenuCell">
+										<a id="id_linkList" href='linkList.do?gamenId=01-9003&fldCtlParty=no' 
+												target="_blank" 
+												onmouseout="msOutSubmenu(this)" 
+												onmouseover="msOverSubmenu(this)"
+												title="リンク集">
+											<img src="image/sub_menu_link.png" border="0" alt="リンク集"/><br>
+											<span class="subLabel"><span class="subLabelHgtSpace"><br></span>リンク</span>
+										</a>
+									</td>
+								
+								
+									<td class="subMenuCell">
+										<a id="id_manual" 
+												href="manual/ip/pc/01-0601.pdf?gamnId=01-9002"
+												target="_blank"
+												onmouseout="msOutSubmenu(this)" 
+												onmouseover="msOverSubmenu(this)"
+												title="操作方法">
+											<img src="image/sub_menu_manual.png" border="0" alt="操作方法"/><br>
+											<span class="subLabel"><span class="subLabelHgtSpace"><br></span>操作<br>方法</span>
+										</a>
+									</td>
+								
+								
+									<td class="subMenuCell">
+										<a id="id_sitemap" 
+												href="javascript:void(0)"
+												onmouseout="msOutSubmenu(this); onoffSelectBox('id_sitemap', 'sitemapSelect', false);" 
+												onmouseover="msOverSubmenu(this); onoffSelectBox('id_sitemap', 'sitemapSelect', true);"
+												title="サイトマップ">
+											<img src="image/sub_menu_sitemap.png" border="0" alt="サイトマップ"/><br>
+											<span class="subLabel"><span class="subLabelHgtSpace"><br></span>サイト<br>マップ</span>
+										</a>
+										
+										<!-- レーダ雨量種別の子Window表示制御 -->
+										<div id="sitemapSelect"
+												onmouseover="onoffSelectBox('id_sitemap', 'sitemapSelect', true);"
+												onmouseout="onoffSelectBox('id_sitemap', 'sitemapSelect', false);" >
+											<table border="0" cellspacing="0" cellpadding="0" align="right" >
+												<tr>
+													<td>
+														<a 
+															href='siteMap.do?gamenId=01-9004&fldCtlParty=no' 
+															target="_top">サイトマップ</a>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<a 
+															href='reference.do?gamenId=01-9005&fldCtlParty=no'
+															target="_blank">解説書</a>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</td>
+								
+								
+									<td class="subMenuCell">
+										
+										
+											<a id="id_fldCtlParty"
+													href="javascript:menuSubmitGoTop('/kawabou/ipTopGaikyo.do', '01-0101', 'yes');"
+													onmouseout="msOutSubmenu(this)"
+													onmouseover="msOverSubmenu(this)"
+													title="水防関係者">
+												<img src="image/sub_menu_fldctl_party.png" border="0" alt="水防関係者"/><br>
+												<span class="subLabel"><span class="subLabelHgtSpace"><br></span>水防<br>関係</span>
+											</a>
+										
+									</td>
+								
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<!-- 地域名表示部 -->
+					<td class="comHeaderspotLbl" height="23" colspan="2" style="background-color:#ffffff; color:#000000;">
+						
+						
+							&nbsp;&nbsp;
+						
+					</td>
+				</tr>				
+			</table>
+
+				
+			
+						
+		</div>
+	</div>
+		</div>
+		<div id="ykh-content">
+			<div id="ykh-menu">
+				<div style="min-height: 540px">
+					<div id="ykh-control4">
+					</div>
+					<div id="ykh-control2">
+						<table border="0" cellspacing="0" cellpadding="0" width="100%">
+							<tr>
+								<td><a href='ipDamDischgRireki.do?init=init&areaCd=81&gamenId=01-0602&fldCtlParty=no' target="_top"><img alt="" title="" align="middle" border="0" src="image/com_mnu_dam_happyou_jokyo.png" onmouseout="javascript:this.src='image/com_mnu_dam_happyou_jokyo.png'" onmouseover="javascript:this.src='image/com_mnu_dam_happyou_jokyo_mso.png'"></a></td>
+								<td class="ykh-label">最新の状況のみを表示しています</td>
+							</tr>
+						</table>
+					</div>
+					<div>
+						<table border="0" cellspacing="0" cellpadding="0" width="100%">
+							<thead>
+								<tr>
+	                            	<th class="ykh-head1" width="18%" scope="col">ダム名</th>
+	                            	<th class="ykh-head2" width="18%" scope="col">水系名</th>
+	                            	<th class="ykh-head2" width="18%" scope="col">河川名</th>
+	                            	<th class="ykh-head2" width="30%" scope="col">対象市町村</th>
+	                            	<th class="ykh-head2" width="16%" scope="col">発表状況</th>
+								</tr>
+							</thead>
+							<tbody>
+								
+								<tr>
+									<td class="ykh-data1" rowspan="1">
+										
+										
+										<a href="#" class="ykh-link" onclick="goIpObsrvKobetuNoTime('/kawabou/ipDamKobetu.do', '2081700700005', '01-1004', 'no', 'true'); return false;"
+												onkeypress="if(isEnterKey(event)) {goIpObsrvKobetuNoTime('/kawabou/ipDamKobetu.do', '2081700700005', '01-1004', 'no', 'true');} return false;">
+											二風谷ダム
+										</a>
+										
+									</td>
+									<td class="ykh-data2" rowspan="1">
+										沙流川
+									</td>
+									<td class="ykh-data2" rowspan="1">
+										沙流川
+									</td>
+									<td class="ykh-data4" rowspan="1">
+										
+										
+										
+											<a href="#" class="ykh-link" onclick="goGaikyoMap('/kawabou/ipGaikyoMap.do', '81', '0105', '', '01-0701', 'no'); return false;"
+													onkeypress="if(isEnterKey(event)) {goGaikyoMap('/kawabou/ipGaikyoMap.do', '81', '0105', '', '01-0701', 'no');} return false;">
+												【北海道道南】
+											</a>
+											<br>
+											
+												
+												<span class="ykh-town">
+												<a href="#" class="ykh-link" onclick="goGaikyoMap('/kawabou/ipGaikyoMap.do', '81', '0105', '0105601', '01-0701', 'no'); return false;"
+														onkeypress="if(isEnterKey(event)) {goGaikyoMap('/kawabou/ipGaikyoMap.do', '81', '0105', '0105601', '01-0701', 'no');} return false;">
+													日高町
+												</a>
+												
+												&nbsp;
+												</span>
+												
+											
+												
+												<span class="ykh-town">
+												<a href="#" class="ykh-link" onclick="goGaikyoMap('/kawabou/ipGaikyoMap.do', '81', '0105', '0105602', '01-0701', 'no'); return false;"
+														onkeypress="if(isEnterKey(event)) {goGaikyoMap('/kawabou/ipGaikyoMap.do', '81', '0105', '0105602', '01-0701', 'no');} return false;">
+													平取町
+												</a>
+												<br>
+												
+												</span>
+												
+											
+											
+										
+										
+									</td>
+									<td class="ykh-data2" bgcolor="#FFFFFF">
+										<a href="#" class="ykh-link" onclick="goIpYokeihoText('/kawabou/ipYokeihoText.do', '3', '2081720825', '201604071821', '2', '01-0603', 'no'); return false;"
+												onkeypress="if(isEnterKey(event)) {goIpYokeihoText('/kawabou/ipYokeihoText.do', '3', '2081720825', '201604071821', '2', '01-0603', 'no');} return false;"
+												style="color: #0000EE;">
+											第2号<br>放流開始の通知<br>4/7 18:21
+										</a>
+									</td>
+								</tr>
+								
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="space-top" style="width: 100%; text-align: right;">
+					<img alt="Compiled by FRICS" title="" border="0" src="image/company_logo_ip.png"/>
+				</div>
+			</div>
+			<div id="ykh-main">
+				<div id="ykh-control3">
+					&nbsp;&nbsp;<span class="comHeaderspotLbl">北海道</span>
+				</div>
+				<div id="ykh-control1">
+					<a href='ipKozuiMap.do?areaCd=81&gamenId=01-0401&fldCtlParty=no' target="_top"><img alt="" title="" align="middle" border="0" src="image/com_mnu_kozui_stage_happyou_jokyo.png" onmouseout="javascript:this.src='image/com_mnu_kozui_stage_happyou_jokyo.png'" onmouseover="javascript:this.src='image/com_mnu_kozui_stage_happyou_jokyo_mso.png'"></a>
+					
+				</div>
+				<div>
+                	<iframe src="imageOut/17/81/20160417/151500_1.html" class="border-line"
+                    	    frameborder="0" hspace="0" vspace="0" marginwidth="0" marginheight="0" scrolling="no"
+                        	width="495" height="495">
+                	</iframe>
+					<img class="img-legend1" alt="" title="" border="0" src="image/hanrei_map_com_damho.png">
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

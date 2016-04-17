@@ -1,6 +1,8 @@
 require 'nokogiri'
 require 'pddn/version'
 require 'pddn/utils/discharge'
+require 'pddn/ip_yokeiho_zenkoku_map'
+require 'pddn/ip_damho_map'
 require 'pddn/top'
 require 'pddn/area'
 require 'pddn/announcement'
