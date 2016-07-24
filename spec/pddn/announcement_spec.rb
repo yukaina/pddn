@@ -4,7 +4,7 @@ describe 'Announcement' do
   context 'No Announcement.' do
     let(:tr) do
       Nokogiri::HTML.parse(
-          <<-TR
+        <<-TR
 					<tr height="64px">
 						<td class="ykh-data" width="80px">
 								&nbsp;
@@ -29,7 +29,7 @@ describe 'Announcement' do
 							</table>
 						</td>
 					</tr>
-      TR
+        TR
       ).xpath('//tr').first
     end
 
@@ -43,7 +43,7 @@ describe 'Announcement' do
   context 'Announcement has 1 Notices.' do
     let(:tr) do
       Nokogiri::HTML.parse(
-          <<-TR
+        <<-TR
     <tr height="64px">
       <td class="ykh-data" width="80px">
       &nbsp;
@@ -78,26 +78,26 @@ describe 'Announcement' do
         </table>
       </td>
     </tr>
-          TR
+        TR
       ).xpath('//tr').first
     end
 
     let(:td) do
       Nokogiri::HTML.parse(
-          <<-TD
+        <<-TD
       <td class="ykh-data" width="96px" bgcolor="#FFFFFF" style="color:#0000EE; font-size: 100%;">
       <a href="#" onclick="goIpYokeihoText('/kawabou/ipYokeihoText.do', '3', '2073720773', '201604180100', '1', '01-0603', 'no')" onkeypress="goIpYokeihoText('/kawabou/ipYokeihoText.do', '3', '2073720773', '201604180100', '1', '01-0603', 'no')" style="color:#0000EE">
           第1号洪水警戒体制の通知4/18 1:00
       </a>
 								</td>
-          TD
+        TD
       ).xpath('//td').first
     end
 
     let(:announcement) { Pddn::Announcement.new(tr) }
     let(:notice) { Pddn::Notice.new(td) }
 
-    describe "Announcement#new" do
+    describe 'Announcement#new' do
       before do
         announcement.discharge_notices << notice
       end
@@ -113,21 +113,4 @@ describe 'Announcement' do
       it { expect(subject.target_municipality).to eq('岩見沢市,三笠市') }
     end
   end
-
-=begin
-  context 'Announcement has 1 Notices.' do
-    let(:area_doc) { Nokogiri::HTML(File.open('spec/html/area/touhoku.html', 'r+:shift_jis', &:read)) }
-
-    subject { announcements }
-
-    it { expect(subject.size).to eq(2) }
-    it { expect(subject.first.discharge_notices.size).to eq(1) }
-    it { expect(subject[1].discharge_notices.size).to eq(1) }
-    it { expect(subject.first.discharge_notices.first.class).to eq(Pddn::Notice) }
-    it { expect(subject.first.dam_name).to eq('釜房ダム') }
-    it { expect(subject.first.river_system_name).to eq('名取川') }
-    it { expect(subject.first.river_name).to eq('碁石川') }
-    it { expect(subject.first.target_municipality).to eq('仙台市、名取市、柴田郡川崎町') }
-  end
-=end
 end
