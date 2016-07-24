@@ -3,7 +3,7 @@ module Pddn
   # Noticeは、第N号で複数ある「ダム放流通知文」へのリンク
   class Notice
     attr_reader :dam_dischg_code, :discharge_report_path, :discharge_report_query, :report_no, :report_time
-    JS_METHOD_NAME = 'goIpYokeihoText'
+    JS_METHOD_NAME = 'goIpYokeihoText'.freeze
 
     def initialize(td)
       notice = td.xpath('a').first
@@ -29,7 +29,7 @@ module Pddn
     def discharge_params_from_(notice)
       @discharge_params = {}
 
-      params = notice.attributes['onclick'].value.gsub(/(\(|\)|#{JS_METHOD_NAME}|\ |\')/o,'').split(',')
+      params = extract_params_from_(notice)
 
       @discharge_params[:report_uri]    = params[0]
       @discharge_params[:wrn_type]      = params[1]
@@ -39,22 +39,18 @@ module Pddn
       @discharge_params[:gamen_id]      = params[5]
       @discharge_params[:fld_ctl_party] = params[6]
 
-      # wrnType=3&rvrSctCd=1869218694&repTime=201605231200&repNo=1&gamenId=01-0603&fldCtlParty=no
-      @discharge_params[:query] = "?wrnType=#{@discharge_params[:wrn_type]}&rvrSctCd=#{@discharge_params[:rvr_sct_cd]}&repTime=#{@discharge_params[:rep_time]}&repNo=#{@discharge_params[:rep_no]}&gamenId=#{@discharge_params[:gamen_id]}&fldCtlParty=#{@discharge_params[:fld_ctl_party]}"
-      # URI.parse(href)
-      #
-      # puts URI.parse(href)
-
+      @discharge_params[:query] = build_discharge_params_query
     end
 
-    # def underscore(word)
-    #   duplicated_word = word.dup
-    #   duplicated_word.gsub!(/::/, '/')
-    #   duplicated_word.gsub!(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
-    #   duplicated_word.gsub!(/([a-z\d])([A-Z])/, '\1_\2')
-    #   duplicated_word.tr!('-', '_')
-    #   duplicated_word.downcase!
-    #   duplicated_word
-    # end
+    def extract_params_from_(notice)
+      notice.attributes['onclick'].value.gsub(/(\(|\)|#{JS_METHOD_NAME}|\ |\')/o, '').split(',')
+    end
+
+    def build_discharge_params_query
+      # rubocop:disable Style/LineLength
+      # wrnType=3&rvrSctCd=1869218694&repTime=201605231200&repNo=1&gamenId=01-0603&fldCtlParty=no
+      "?wrnType=#{@discharge_params[:wrn_type]}&rvrSctCd=#{@discharge_params[:rvr_sct_cd]}&repTime=#{@discharge_params[:rep_time]}&repNo=#{@discharge_params[:rep_no]}&gamenId=#{@discharge_params[:gamen_id]}&fldCtlParty=#{@discharge_params[:fld_ctl_party]}"
+      # rubocop:enable Style/LineLength
+    end
   end
 end
