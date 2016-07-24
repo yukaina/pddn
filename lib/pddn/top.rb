@@ -18,9 +18,9 @@ module Pddn
 
     private
 
-    def init_discharge_uri()
+    def init_discharge_uri
       10.times.each do |i|
-        discharge_uris <<  "ipDamhoMap.do?areaCd=#{81+i}&gamenId=01-0601&fldCtlParty=no"
+        discharge_uris << "ipDamhoMap.do?areaCd=#{81 + i}&gamenId=01-0601&fldCtlParty=no"
       end
       @somewhere_discharge = true
     end
