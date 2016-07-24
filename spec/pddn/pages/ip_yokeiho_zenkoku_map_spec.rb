@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'IpYokeihoZenkokuMap' do
-
   let(:ip_yokeiho_zenkoku_map_doc) do
     Nokogiri::HTML(File.open('spec/html/ipYokeihoZenkokuMap.html', 'r+:utf-8', &:read))
   end
