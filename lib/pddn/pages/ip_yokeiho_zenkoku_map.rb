@@ -1,6 +1,6 @@
 module Pddn
-  # for 国土交通省【川の防災情報】ダム放流通知全国地図
   module Pages
+    # for 国土交通省【川の防災情報】ダム放流通知全国地図
     class IpYokeihoZenkokuMap
       attr_reader :doc, :discharge_uris
       AREA_MAP_URI = 'ipDamhoMap.do'.freeze
@@ -23,7 +23,7 @@ module Pddn
 
       def discharge_link_from_area(area)
         return nil if area.name != 'area'
-        area_cd = area.attributes['onmouseover'].value.gsub(/msOverSubmenu/,'').gsub(/[^0-9]/,'')
+        area_cd = area.attributes['onmouseover'].value.gsub(/msOverSubmenu/, '').gsub(/[^0-9]/, '')
         href = "#{AREA_MAP_URI}?#{URL_PARAM_AREA_CD}=#{area_cd}&#{URL_PARAM_GAMEN_ID_ETC}"
         URI.parse(href)
       end
