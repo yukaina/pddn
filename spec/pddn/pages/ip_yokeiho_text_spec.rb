@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'IpYokeihoText' do
   let(:ip_yokeiho_text_doc) do
-    Nokogiri::HTML(File.open('spec/html/IpYokeihoText.html', 'r+:utf-8', &:read))
+    Nokogiri::HTML(File.open('spec/html/ipYokeihoText.html', 'r+:utf-8', &:read))
   end
 
   let(:reports) do
