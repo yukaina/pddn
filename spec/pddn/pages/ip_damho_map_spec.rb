@@ -6,7 +6,7 @@ describe 'IpDamhoMap' do
   end
 
   context do
-    subject { Pddn::IpDamhoMap.new(ip_damho_map_doc) }
+    subject { Pddn::Pages::IpDamhoMap.new(ip_damho_map_doc) }
     it { expect(subject.doc).to eq(ip_damho_map_doc) }
     it { expect(subject.somewhere_discharge?).to eq(true)}
   end

@@ -9,7 +9,7 @@ module Pddn
       @doc = page_doc
       @discharge_uris = []
 
-      init_discharge_uri(page_doc)
+      init_discharge_uri
     end
 
     def somewhere_discharge?
@@ -18,25 +18,11 @@ module Pddn
 
     private
 
-    def init_discharge_uri(doc)
-      doc.xpath('//table[2]/tr[position()>1]').each do |tr|
-        # 放流通知がある地域のリンクを取得
-        if discharge?(tr)
-          @somewhere_discharge = true
-          discharge_uris << discharge_link_from_tr(tr)
-        end
+    def init_discharge_uri()
+      10.times.each do |i|
+        discharge_uris <<  "ipDamhoMap.do?areaCd=#{81+i}&gamenId=01-0601&fldCtlParty=no"
       end
-    end
-
-    def discharge?(tr)
-      Pddn::Utils::Discharge.text_strip(tr.xpath("td[position()=#{TD_DISCHARGE_NUM}]")).to_i > 0
-    end
-
-    def discharge_link_from_tr(tr)
-      return nil if tr.name != 'tr'
-      discharge_link = tr.search('td/a').first
-      href = discharge_link[:href]
-      URI.parse(href)
+      @somewhere_discharge = true
     end
   end
 end
