@@ -14,13 +14,16 @@ describe 'Notice' do
   end
 
   context do
-# :dam_dischg_code, :discharge_report_path, :discharge_report_query, :report_no, :report_time
+    # :dam_dischg_code, :discharge_report_path, :discharge_report_query, :report_no, :report_time
     subject { Pddn::Notice.new(td) }
     it { expect(subject.dam_dischg_code).to eq('2073720773') }
     it { expect(subject.report_no).to eq('1') }
     it { expect(subject.report_time).to eq('201604180100') }
     it { expect(subject.discharge_report_path).to eq('/kawabou/ipYokeihoText.do') }
-    it { expect(subject.discharge_report_query).to eq('wrnType=3&rvrSctCd=2073720773&repTime=201604180100&repNo=1&gamenId=01-0603&fldCtlParty=no') }
+    it do
+      return_query = 'wrnType=3&rvrSctCd=2073720773&repTime=201604180100&repNo=1&gamenId=01-0603&fldCtlParty=no'
+      expect(subject.discharge_report_query).to eq(return_query)
+    end
     it { expect(subject.to_h).to eq(dam_dischg_code: '2073720773', report_no: '1', report_time: '201604180100') }
   end
 end
