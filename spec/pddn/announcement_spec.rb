@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 describe 'Announcement' do
@@ -111,6 +112,15 @@ describe 'Announcement' do
       it { expect(subject.river_system_name).to eq('石狩川') }
       it { expect(subject.river_name).to eq('幾春別川') }
       it { expect(subject.target_municipality).to eq('岩見沢市,三笠市') }
+      it do
+        expect(subject.to_h).to eq(
+          dam_name: '桂沢ダム',
+          river_system_name: '石狩川',
+          river_name: '幾春別川',
+          target_municipality: '岩見沢市,三笠市',
+          dam_dischg_code: '2073720773'
+        )
+      end
     end
   end
 end

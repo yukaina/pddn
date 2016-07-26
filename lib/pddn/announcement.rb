@@ -1,11 +1,10 @@
+# frozen_string_literal: true
 module Pddn
   # ダム放流通知発表状況表(〇〇地方)のtableのtr(ダム毎の放流通知の行)
   # noticeは、第N号で複数ある「ダム放流通知文」へのリンク
   class Announcement
     attr_reader :dam_name, :river_system_name, :river_name, :target_municipality
     attr_accessor :discharge_notices
-    # JS_METHOD_NAME = 'goIpObsrvKobetuNoTime'
-    TD_DISCHARGE_NOTICE = 5
 
     def initialize(tr)
       @dam_name = Pddn::Utils::Discharge.text_strip(tr.xpath('td[1]/span/a'))
@@ -27,6 +26,16 @@ module Pddn
 
     def nil?
       dam_name.nil? || dam_name == ''
+    end
+
+    def to_h
+      {
+        dam_name:            dam_name,
+        river_system_name:   river_system_name,
+        river_name:          river_name,
+        target_municipality: target_municipality,
+        dam_dischg_code:     dam_dischg_code
+      }
     end
   end
 end
