@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Pddn
   # ダム放流通知発表状況表(〇〇地方)のtableのtr(ダム毎の放流通知の行)内にある「発表状況」
   # Noticeは、第N号で複数ある「ダム放流通知文」へのリンク

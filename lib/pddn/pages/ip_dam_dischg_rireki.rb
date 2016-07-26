@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Pddn
   module Pages
     # 地域ごとのダム放流通知発表状況のページ

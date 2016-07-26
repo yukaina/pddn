@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Pddn
   module Utils
     # for discharge_documents strip.

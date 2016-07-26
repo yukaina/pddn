@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Pddn
   module Pages
     # for 国土交通省【川の防災情報】ダム放流通知全国地図

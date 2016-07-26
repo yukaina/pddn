@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Pddn
   module Pages
     # ダムの放流通知発表文

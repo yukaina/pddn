@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 module Pddn
   module Pages
-    # for 国土交通省【川の防災情報】ダム放流通知全国地図
+    # for 国土交通省【川の防災情報】ダム放流通知発表地域図
     # path /kawabou/ipDamhoMap.do?areaCd=81&gamenId=01-0601&fldCtlParty=no
     class IpDamhoMap
       attr_reader :doc, :discharge_history_uri
