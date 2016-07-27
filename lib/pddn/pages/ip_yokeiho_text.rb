@@ -9,15 +9,15 @@ module Pddn
       def initialize(page_doc)
         @doc = page_doc
         extract_headers_from_(
-          page_doc.xpath('/html/body/div[2]/div[2]/table/tbody/tr/td/table/tbody/tr[1]/td').first.text
+          page_doc.xpath('/html/body/div[2]/div[2]/table/tr/td/table/tr[1]/td').first.text
                   .encode('utf-8', invalid: :replace, undef: :replace)
                   .tr('　', ' ')
                   .split(' ')
         )
 
-        @publisher = extract_form_('/html/body/div[2]/div[2]/table/tbody/tr/td/table/tbody/tr[2]/td') # 発表者
-        @title = extract_form_('/html/body/div[2]/div[2]/table/tbody/tr/td/table/tbody/tr[3]/td/span') # タイトル
-        @document = extract_form_('/html/body/div[2]/div[2]/table/tbody/tr/td/table/tbody/tr[4]/td') # 本文
+        @publisher = extract_form_('/html/body/div[2]/div[2]/table/tr/td/table/tr[2]/td') # 発表者
+        @title = extract_form_('/html/body/div[2]/div[2]/table/tr/td/table/tr[3]/td/span') # タイトル
+        @document = extract_form_('/html/body/div[2]/div[2]/table/tr/td/table/tr[4]/td') # 本文
       end
 
       def to_h
