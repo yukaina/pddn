@@ -9,6 +9,6 @@ describe 'Top' do
     subject { Pddn::Top.new(top_page_doc) }
     it { expect(subject.doc).to eq(top_page_doc) }
     it { expect(subject.somewhere_discharge?).to be_truthy }
-    it { expect(subject.discharge_uris.first.to_s).to eq 'ipDamDischgRireki.do?areaCd=81&gamenId=01-0601&fldCtlParty=no' }
+    it { expect(subject.discharge_uris.first.to_s).to eq 'ipDamDischgRireki.do?areaCd=81&gamenId=01-0602&fldCtlParty=no' }
   end
 end

@@ -21,7 +21,7 @@ module Pddn
 
     def init_discharge_uri
       10.times.each do |i|
-        discharge_uris << "ipDamDischgRireki.do?areaCd=#{81 + i}&gamenId=01-0601&fldCtlParty=no"
+        discharge_uris << "ipDamDischgRireki.do?areaCd=#{81 + i}&gamenId=01-0602&fldCtlParty=no"
       end
       @somewhere_discharge = true
     end
