@@ -2,8 +2,8 @@ source 'https://rubygems.org'
 
 # Specify your gem's dependencies in pddn.gemspec
 gemspec
-gem 'simplecov'
 gem 'rubocop'
+gem 'simplecov'
 
 gem 'rspec_junit_formatter'
 
