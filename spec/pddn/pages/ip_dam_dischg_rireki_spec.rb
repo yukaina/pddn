@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'IpDamDischgRireki' do
   let(:ip_dam_dischg_rireki_doc) do
-    Nokogiri::HTML(File.open('spec/html/IpDamDischgRireki.html', 'r+:utf-8', &:read))
+    Nokogiri::HTML(File.open('spec/html/ipDamDischgRireki.html', 'r+:utf-8', &:read))
   end
 
   context do
