@@ -11,3 +11,6 @@ test:
   pre:
     - ruby -v
     - bundle exec rubocop
+  override:
+    - bundle exec rspec
+    - bundle exec codeclimate-test-reporter
