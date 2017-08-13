@@ -9,12 +9,15 @@ module Pddn
     def initialize(td)
       notice = td.xpath('a').first
       return nil unless notice
-      discharge_params_from_(notice)
-      @dam_dischg_code = @discharge_params[:rvr_sct_cd]
-      @report_no =       @discharge_params[:rep_no]
-      @report_time =     @discharge_params[:rep_time]
-      @discharge_report_path = URI.parse(@discharge_params[:report_uri]).path
-      @discharge_report_query = URI.parse(@discharge_params[:query]).query
+      params = extract_params_from_(notice)
+
+      discharge_params = discharge_params(params)
+
+      @dam_dischg_code = discharge_params[:rvr_sct_cd]
+      @report_no =       discharge_params[:rep_no]
+      @report_time =     discharge_params[:rep_time]
+      @discharge_report_path = URI.parse(discharge_params[:report_uri]).path
+      @discharge_report_query = URI.parse(query_parameter(discharge_params)).query
     end
 
     def to_h
@@ -27,30 +30,26 @@ module Pddn
 
     private
 
-    def discharge_params_from_(notice)
-      @discharge_params = {}
-
-      params = extract_params_from_(notice)
-
-      @discharge_params[:report_uri]    = params[0]
-      @discharge_params[:wrn_type]      = params[1]
-      @discharge_params[:rvr_sct_cd]    = params[2]
-      @discharge_params[:rep_time]      = params[3]
-      @discharge_params[:rep_no]        = params[4]
-      @discharge_params[:gamen_id]      = params[5]
-      @discharge_params[:fld_ctl_party] = params[6]
-
-      @discharge_params[:query] = build_discharge_params_query
+    def discharge_params(params)
+      {
+        report_uri:    params[0],
+        wrn_type:      params[1],
+        rvr_sct_cd:    params[2],
+        rep_time:      params[3],
+        rep_no:        params[4],
+        gamen_id:      params[5],
+        fld_ctl_party: params[6]
+      }
     end
 
     def extract_params_from_(notice)
       notice.attributes['onclick'].value.gsub(/(\(|\)|#{JS_METHOD_NAME}|\ |\')/o, '').split(',')
     end
 
-    def build_discharge_params_query
+    def query_parameter(discharge_params)
       # rubocop:disable Style/LineLength
       # wrnType=3&rvrSctCd=1869218694&repTime=201605231200&repNo=1&gamenId=01-0603&fldCtlParty=no
-      "?wrnType=#{@discharge_params[:wrn_type]}&rvrSctCd=#{@discharge_params[:rvr_sct_cd]}&repTime=#{@discharge_params[:rep_time]}&repNo=#{@discharge_params[:rep_no]}&gamenId=#{@discharge_params[:gamen_id]}&fldCtlParty=#{@discharge_params[:fld_ctl_party]}"
+      "?wrnType=#{discharge_params[:wrn_type]}&rvrSctCd=#{discharge_params[:rvr_sct_cd]}&repTime=#{discharge_params[:rep_time]}&repNo=#{discharge_params[:rep_no]}&gamenId=#{discharge_params[:gamen_id]}&fldCtlParty=#{discharge_params[:fld_ctl_party]}"
       # rubocop:enable Style/LineLength
     end
   end
